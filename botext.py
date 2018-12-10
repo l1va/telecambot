@@ -11,11 +11,11 @@ proxy = sys.argv[1]
 port = sys.argv[2]
 
 auth = True
-list_admin = ['leonvr']
+list_admin = ['']
 list_user = []
 
 
-TOKEN = '710268354:AAE_8VRXgDMUZWc8V7YWYonkjEyiKPXv4mI'
+TOKEN = ''
 REQUEST_KWARGS = {
      'proxy_url': 'socks5://{0}:{1}'.format(proxy,port)
     # Optional, if you need authentication:
