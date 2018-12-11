@@ -23,8 +23,6 @@ def infinite_webcam():
                 break
             else:
                 id = id + 1
-                print(id)
-        print('finally', id)
         
         try:
             webcam = cv2.VideoCapture(id)
