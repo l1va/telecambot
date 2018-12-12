@@ -1,9 +1,6 @@
 # telecambot
 Getting images from webcam by telegram bot in python3.
 
-
-If you need <i>proxy</i> - just uncomment line in botext.py and set valid proxy url.
-
 ####Dependencies:
 
 ```apt install python3-pip python3-dev python3-opencv build-essential libssl-dev libffi-dev libgnutls28-dev```
