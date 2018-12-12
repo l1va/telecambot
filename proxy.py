@@ -42,14 +42,11 @@ def run(proxy):
 
     stop()
 
-    for script in ['webcam.py','botext.py']:
+    os.system('./{0} {1} {2} &'.format('botext.py', proxy[0], proxy[1]))
+    print('Started botext.py')
 
-        if script == 'botext.py':
-            os.system('./{0} {1} {2} &'.format(script, proxy[0], proxy[1]))
-            print('Started ', script)
-        else:
-            os.system('./{0} &'.format(script))
-            print('Started ', script)
+    os.system('./{0} &'.format('webcam.py'))
+    print('Started webcam.py')
 
 def read(name):
 

@@ -17,15 +17,8 @@ def infinite_webcam():
 
     while repeat:
 
-        id = 0
-        while id < 4: # Checking video interface
-            if os.access('/dev/video{0}'.format(id), os.F_OK) == True:
-                break
-            else:
-                id = id + 1
-        
         try:
-            webcam = cv2.VideoCapture(id)
+            webcam = cv2.VideoCapture(-1)
             while repeat:
                 ok, img = webcam.read()
                 if ok:

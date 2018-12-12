@@ -52,35 +52,35 @@ def run_bot():
     def authentication(username,level):
         if level == 'user':
             if username in list_user or username in list_admin:
-                return 1
+                return True
 				
         elif level == 'admin':
             if username in list_admin:
-                return 1
+                return True
 			   
     def user(bot, update):
-	
-        if auth == True:
 		
-            if authentication(str(update.message.from_user.username),'admin') == 1:
-                command = str(update.message.text).split(None)
-				
-                if command[1] == 'add' and command[2]:
-                    if command[2] not in list_user:
-                        list_user.append(command[2])
-                        bot.send_message(chat_id=update.message.chat_id, text="user {0} has been added".format(command[2]))
-						
-                elif command[1] == 'rm' and len(command) == 3:
-                    if command[2] in list_user:
-                        list_user.remove(command[2])
-                        bot.send_message(chat_id=update.message.chat_id, text="user {0} has been removed".format(command[2]))
-						
-                elif command[1] =='list':
-                    bot.send_message(chat_id=update.message.chat_id, text="{0}".format(list_user))
-
-    user_handler = CommandHandler('user', user)
-    dispatcher.add_handler(user_handler)
-
+        if authentication(str(update.message.from_user.username),'admin') == True:
+            command = str(update.message.text).split(None)
+            
+            if command[1] == 'add' and len(command) == 3:
+                if command[2] not in list_user:
+                    list_user.append(command[2])
+                    bot.send_message(chat_id=update.message.chat_id, text="user {0} has been added".format(command[2]))
+                    
+            elif command[1] == 'rm' and len(command) == 3:
+                if command[2] in list_user:
+                    list_user.remove(command[2])
+                    bot.send_message(chat_id=update.message.chat_id, text="user {0} has been removed".format(command[2]))
+                    
+            elif command[1] =='list':
+                bot.send_message(chat_id=update.message.chat_id, text="{0}".format(list_user))
+    
+    if auth == True:
+        user_handler = CommandHandler('user', user)
+        dispatcher.add_handler(user_handler)
+    else:
+        pass
 	
     def start(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text="I'm a super bot, i know /webcam command!")
