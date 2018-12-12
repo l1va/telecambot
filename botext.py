@@ -97,7 +97,7 @@ def run_bot():
 
     def webcam(bot, update):
         if auth == True:
-            if authentication(str(update.message.from_user.username),'user') == 1:
+            if authentication(str(update.message.from_user.username),'user') == True:
                 bot.send_photo(chat_id=update.message.chat_id, photo=open('img.png', 'rb'))
             else:
                 bot.send_message(chat_id=update.message.chat_id, text="Sorry, you are not authorized person. Please, contact with @{0}".format(list_admin[0]))
