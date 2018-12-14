@@ -1,11 +1,11 @@
 # telecambot
 Getting images from webcam by telegram bot in python3.
 
-####Dependencies:
+#### Dependencies:
 
 ```apt install python3-pip python3-dev python3-opencv build-essential libssl-dev libffi-dev libgnutls28-dev```
 
-####Running
+#### Running
 
 To run the program use ./proxy.py
 
