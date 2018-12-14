@@ -1,11 +1,23 @@
+#!/usr/bin/python3
 import logging
+import sys
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler, Filters
+from telegram.error import (TelegramError, Unauthorized, BadRequest,
+                            TimedOut, ChatMigrated, NetworkError)
 
-TOKEN = 'YOUR_TOKEN'
+proxy = sys.argv[1]
+port = sys.argv[2]
+
+auth = True
+list_admin = ['']
+list_user = []
+
+
+TOKEN = ''
 REQUEST_KWARGS = {
-    # 'proxy_url': 'http://91.198.137.114:3128',
+     'proxy_url': 'socks5://{0}:{1}'.format(proxy,port)
     # Optional, if you need authentication:
     # 'urllib3_proxy_kwargs': {
     #     'username': 'PROXY_USER',
@@ -15,10 +27,61 @@ REQUEST_KWARGS = {
 
 
 def run_bot():
+
     updater = Updater(TOKEN, request_kwargs=REQUEST_KWARGS)
     dispatcher = updater.dispatcher
-    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
+    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', filename='error.log', level=logging.ERROR)
+
+    def error_callback(bot, update, error):
+        try:
+            raise error
+        except BadRequest:
+            print('BadRequest',error)
+            # handle malformed requests - read more below!
+        except TimedOut:
+            print('TimedOut', error)
+            # handle slow connection problems
+        except NetworkError:
+            print('NetworkError', error)
+            logging.error(error)
+            # handle other connection problems
+
+    dispatcher.add_error_handler(error_callback)
+
+    def authentication(username,level):
+        if level == 'user':
+            if username in list_user or username in list_admin:
+                return True
+				
+        elif level == 'admin':
+            if username in list_admin:
+                return True
+			   
+    def user(bot, update):
+		
+        if authentication(str(update.message.from_user.username),'admin') == True:
+            command = str(update.message.text).split(None)
+            
+            if command[1] == 'add' and len(command) == 3:
+                if command[2] not in list_user:
+                    list_user.append(command[2])
+                    bot.send_message(chat_id=update.message.chat_id, text="user {0} has been added".format(command[2]))
+                    
+            elif command[1] == 'rm' and len(command) == 3:
+                if command[2] in list_user:
+                    list_user.remove(command[2])
+                    bot.send_message(chat_id=update.message.chat_id, text="user {0} has been removed".format(command[2]))
+                    
+            elif command[1] =='list':
+                bot.send_message(chat_id=update.message.chat_id, text="{0}".format(list_user))
+    
+    if auth == True:
+        user_handler = CommandHandler('user', user)
+        dispatcher.add_handler(user_handler)
+    else:
+        pass
+	
     def start(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text="I'm a super bot, i know /webcam command!")
 
@@ -33,10 +96,17 @@ def run_bot():
     dispatcher.add_handler(echo_handler)
 
     def webcam(bot, update):
-        bot.send_photo(chat_id=update.message.chat_id, photo=open('img.png', 'rb'))
+        if auth == True:
+            if authentication(str(update.message.from_user.username),'user') == True:
+                bot.send_photo(chat_id=update.message.chat_id, photo=open('img.png', 'rb'))
+            else:
+                bot.send_message(chat_id=update.message.chat_id, text="Sorry, you are not authorized person. Please, contact with @{0}".format(list_admin[0]))
+        else:
+            bot.send_photo(chat_id=update.message.chat_id, photo=open('img.png', 'rb'))
 
     webcam_handler = CommandHandler('webcam', webcam)
     dispatcher.add_handler(webcam_handler)
+
 
     def unknown(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text="sorry, I understand only /webcam command.")

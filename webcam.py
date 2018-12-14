@@ -1,9 +1,10 @@
+#!/usr/bin/python3
 import signal
 import traceback
 import cv2
 import time
 import logging
-
+import os
 repeat = True
 
 
@@ -13,9 +14,11 @@ def exit_gracefully(signum, frame):
 
 
 def infinite_webcam():
+
     while repeat:
+
         try:
-            webcam = cv2.VideoCapture(0)
+            webcam = cv2.VideoCapture(-1)
             while repeat:
                 ok, img = webcam.read()
                 if ok:
@@ -27,9 +30,11 @@ def infinite_webcam():
                 # to skip cache: the av-based linux capture code is using an internal fifo (5 frames, iirc) (c)
                 for j in range(1, 10):
                     webcam.read()
+
             webcam.release()
             cv2.destroyAllWindows()
             time.sleep(5)
+
             print("webcam done")
         except Exception:
             logging.error("webcam error:" + traceback.format_exc())
