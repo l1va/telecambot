@@ -7,11 +7,12 @@ Getting images from webcam by telegram bot in python3.
 
 #### Running
 
-To run the program use ./proxy.py
+Update 'Get rid of proxy, because it works unstable'.
 
-The proxy.py script contains a configuration of proxy servers. It searches free proxy servers from the global list.
+  
+To run the program use ./main.py
 
-The bot sends logs to an error.log file. If there is a HTTPError it interrupts process and starts job with a new proxy server. 
+The bot sends logs to an error.log file.  
 
 There are two user types in the bot. It's required to controll access to the bot. 
  
@@ -21,11 +22,13 @@ Admin has the following rights:
 
 the list of commands: 
 
-1) /user add username  - Add user to an access list
+1) /cmd add username  - Add user to an access list
 
-2) /user rm username - remove user from an access list
+2) /cmd rm username - remove user from an access list
 
-3) /user list - show an access list
+3) /cmd list - show an access list
+
+4) /cmd status - show interfaces, cpu temperature, uptime. 
 
 
 Should work <i>infinitely</i>. Otherwise - open an issue.
