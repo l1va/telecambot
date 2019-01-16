@@ -1,5 +1,4 @@
 setuptools
 psutil
-proxybroker
 python-telegram-bot
 PySocks
