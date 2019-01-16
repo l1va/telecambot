@@ -7,7 +7,7 @@ Getting images from webcam by telegram bot in python3.
 
 #### Running
 
-Update 'Get rid of proxy, because it works unstable'.
+Update 'Get rid of proxy, because it is unstable'.
 
   
 To run the program use ./main.py
